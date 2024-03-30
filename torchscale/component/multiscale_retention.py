@@ -99,7 +99,7 @@ class MultiScaleRetention(nn.Module):
         if "prev_key_value" in incremental_state:
             prev_kv = incremental_state["prev_key_value"]
             prev_scale = incremental_state["scale"]
-            scale = prev_scale * decay + 1
+            scale = prev_scale * decay + 1  # 加1防止数值下溢
             kv = prev_kv * (prev_scale.sqrt() * decay / scale.sqrt()).view(self.num_heads, 1, 1) + kv / scale.sqrt().view(self.num_heads, 1, 1)
             # kv = prev_kv * decay.view(self.num_heads, 1, 1) + kv
         else:
